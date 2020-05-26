@@ -1,4 +1,4 @@
-// Copyright (C) 2014 The Android Open Source Project
+// Copyright (C) 2016 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,12 +11,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-include ':library'
-include ':demo'
-include ':opus-extension'
-include ':vp9-extension'
-include ':webm-sw-demo'
+gradle.ext.exoplayerRoot = settingsDir
 
-project(':opus-extension').projectDir = new File(settingsDir, 'extensions/opus')
-project(':vp9-extension').projectDir = new File(settingsDir, 'extensions/vp9')
-project(':webm-sw-demo').projectDir = new File(settingsDir, 'demo_misc/webm_sw_decoder')
+def modulePrefix = ':'
+if (gradle.ext.has('exoplayerModulePrefix')) {
+    modulePrefix += gradle.ext.exoplayerModulePrefix
+}
+
+include modulePrefix + 'demo'
+include modulePrefix + 'demo-cast'
+include modulePrefix + 'demo-gl'
+include modulePrefix + 'demo-surface'
+include modulePrefix + 'playbacktests'
+project(modulePrefix + 'demo').projectDir = new File(rootDir, 'demos/main')
+project(modulePrefix + 'demo-cast').projectDir = new File(rootDir, 'demos/cast')
+project(modulePrefix + 'demo-gl').projectDir = new File(rootDir, 'demos/gl')
+project(modulePrefix + 'demo-surface').projectDir = new File(rootDir, 'demos/surface')
+project(modulePrefix + 'playbacktests').projectDir = new File(rootDir, 'playbacktests')
+
+apply from: 'core_settings.gradle'
